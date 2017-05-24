@@ -52,7 +52,7 @@ public class ColorInActivity extends AppCompatActivity {
                 setColor(255,0,0,0);
                 break;
             case R.id.rbRandom:
-                civColorIn.setMyColorType(false);   //选择随机则传递false
+                civColorIn.setMyColorType(false);   //选择随机则传递false,随机颜色数值由页面返回
                 break;
         }
 
