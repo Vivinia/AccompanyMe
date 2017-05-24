@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.example.weixu.accompanyme.InsertChartInfoActivity">
+
+    <EditText
+        android:id="@+id/etBabyTall"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/btn_long_text_input"
+        android:hint="身高cm" />
+
+    <EditText
+        android:id="@+id/etBabyWeight"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_long_text_input"
+        android:hint="体重kg" />
+
+    <Button
+        android:id="@+id/btInsertSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/xml_btn_color_accent"
+        android:onClick="btSubmit"
+        android:text="确定"
+        android:textColor="@color/white" />
+
+</LinearLayout>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.weixu.accompanyme.ColorInActivity">
+
+
+    <com.example.weixu.view.MyRadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbRed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="红色" />
+
+            <RadioButton
+                android:id="@+id/rbOrange"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="橙色" />
+
+            <RadioButton
+                android:id="@+id/rbYellow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="黄色" />
+
+            <RadioButton
+                android:id="@+id/rbGreen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="绿色" />
+
+            <RadioButton
+                android:id="@+id/rbCyan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="青色" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbBlue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="蓝色" />
+
+            <RadioButton
+                android:id="@+id/rbPurple"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="紫色" />
+
+            <RadioButton
+                android:id="@+id/rbBrown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="棕色" />
+
+            <RadioButton
+                android:id="@+id/rbBlack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="changeColor"
+                android:text="黑色" />
+
+            <RadioButton
+                android:id="@+id/rbRandom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:onClick="changeColor"
+                android:text="随机" />
+        </LinearLayout>
+    </com.example.weixu.view.MyRadioGroup>
+
+    <com.example.weixu.view.ColourImageView
+        android:id="@+id/civColorIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:srcCompat="@drawable/butterfly" />
+
+    <Button
+        android:id="@+id/btClean"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/xml_btn_color_primary"
+        android:elevation="3dp"
+        android:onClick="btClick"
+        android:text="清空"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:translationZ="3dp" />
+</LinearLayout>

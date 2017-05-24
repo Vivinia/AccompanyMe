@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.weixu.accompanyme.InsertDynamicActivity">
+
+    <EditText
+        android:id="@+id/etDynamicContent"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/text_input"
+        android:ems="150"
+        android:gravity="top" />
+
+    <ImageView
+        android:id="@+id/ivDynamicPicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/etDynamicContent"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_long_grey"
+        android:onClick="InsertDynamicOnclick"
+        android:padding="20dp"
+        android:src="@drawable/add_white" />
+
+    <Button
+        android:id="@+id/btDynamicSubmit"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/ivDynamicPicture"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/xml_btn_color_gray"
+        android:onClick="InsertDynamicOnclick"
+        android:text="发表"
+        android:enabled="false"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+</RelativeLayout>

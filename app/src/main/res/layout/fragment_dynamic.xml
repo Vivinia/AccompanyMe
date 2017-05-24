@@ -1,0 +1,58 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="com.example.weixu.accompanyme.DynamicFragment">
+
+    <ListView
+        android:id="@+id/lvDynamic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:divider="#0000"></ListView>
+
+    <!-- <android.support.design.widget.FloatingActionButton
+         android:id="@+id/fabOpenCamera"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom|end"
+         android:layout_margin="@dimen/fab_margin"
+         android:elevation="0dp"
+         android:outlineProvider="none"
+         android:src="@drawable/ic_menu_camera"
+         android:translationZ="0dp"
+         android:visibility="invisible" />
+
+     <android.support.design.widget.FloatingActionButton
+         android:id="@+id/fabOpenAlbum"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom|end"
+         android:layout_margin="@dimen/fab_margin"
+         android:elevation="0dp"
+         android:outlineProvider="none"
+         android:src="@drawable/ic_menu_gallery"
+         android:translationZ="0dp"
+         android:visibility="invisible" />
+
+     <android.support.design.widget.FloatingActionButton
+         android:id="@+id/fabInsertPicture"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="bottom|end"
+         android:layout_margin="@dimen/fab_margin"
+         android:src="@drawable/ic_menu_send" />
+         -->
+    <ImageView
+        android:id="@+id/ivOpenInsertDynamic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@drawable/xml_btn_color_primary"
+        android:elevation="2dp"
+        android:padding="6dp"
+        android:src="@drawable/ic_camera_black_24dp"
+        android:translationZ="2dp" />
+</FrameLayout>

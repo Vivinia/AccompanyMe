@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">陪我-成长守护</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_full_image">FullImageActivity</string>
+    <string name="dummy_button">下载</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+
+</resources>

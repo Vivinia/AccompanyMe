@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.weixu.accompanyme.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <fragment
+        android:id="@+id/frag_main_content"
+        android:name="com.example.weixu.accompanyme.EntertainmentFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bbl_appbar" />
+
+    <android.support.v7.widget.ButtonBarLayout
+        android:id="@+id/bbl_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorLight"
+        android:elevation="3dp"
+        android:translationZ="3dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray"></RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/acib_entertainment"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/xml_btn_color_light"
+                    android:src="@drawable/ic_album_black_24dp" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/acib_dynamic"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/xml_btn_color_light"
+                    android:src="@drawable/ic_menu_gallery" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/acib_intelligence"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/xml_btn_color_light"
+                    android:src="@drawable/ic_color_lens_black_24dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.ButtonBarLayout>
+
+</RelativeLayout>
