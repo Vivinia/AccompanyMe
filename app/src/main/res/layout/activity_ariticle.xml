@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.weixu.accompanyme.VideoWebActivity">
-
+    tools:context=".AriticleActivity">
 
     <WebView
-        android:id="@+id/web_view"
+        android:id="@+id/wbShowArticle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"

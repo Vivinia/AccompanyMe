@@ -115,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        app:srcCompat="@drawable/butterfly" />
+        app:srcCompat="@drawable/img_duolaameng" />
 
     <Button
         android:id="@+id/btClean"

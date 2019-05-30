@@ -22,12 +22,12 @@
             android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@drawable/xml_btn_color_light"
+            android:background="@color/white"
             android:hint="搜索歌曲，歌手等"
             android:paddingLeft="50dp"
             android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorGray"
             android:textSize="16sp"
             tools:ignore="RtlCompat,HardcodedText,RtlHardcoded" />
 
@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:tint="@color/colorPrimary"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_music_video_black_24dp" />
 

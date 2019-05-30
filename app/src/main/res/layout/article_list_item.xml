@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/llArticleList"
+    android:background="#fdfdfd">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:background="#ffffff"
+        android:elevation="1dp">
+    <ImageView
+        android:id="@+id/ivArticlePicture"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dp"
+        android:scaleType="centerCrop"
+        android:src="@android:drawable/ic_menu_camera"/>
+
+    <TextView
+        android:id="@+id/tvArticleTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/ivArticlePicture"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="5dp"
+        android:text="文章名称"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"/>
+    </RelativeLayout>
+
+</LinearLayout>

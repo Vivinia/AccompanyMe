@@ -54,7 +54,6 @@
                 android:background="@drawable/btn_long_white"
                 android:text="获取验证码"
                 android:textColor="@color/colorAccent"
-                android:onClick="btRegisterClick"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -80,6 +79,7 @@
             android:drawableLeft="@drawable/ic_menu_gallery"
             android:drawablePadding="10dp"
             android:ems="10"
+            android:focusable="false"
             android:hint="您是宝宝的什么人" />
         <EditText
             android:id="@+id/etRegisterBabyName"
@@ -100,6 +100,7 @@
             android:drawableLeft="@drawable/ic_menu_gallery"
             android:drawablePadding="10dp"
             android:ems="10"
+            android:focusable="false"
             android:hint="宝宝性别" />
         <EditText
             android:id="@+id/etRegisterBabyBirthday"
@@ -110,7 +111,8 @@
             android:drawableLeft="@drawable/ic_menu_gallery"
             android:drawablePadding="10dp"
             android:ems="10"
-            android:hint="宝宝生日如2017-01-01" />
+            android:focusable="false"
+            android:hint="宝宝生日如2017-01-01"/>
 
         <Button
             android:id="@+id/btRegister"
@@ -119,7 +121,6 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/xml_btn_color_accent"
             android:text="注册"
-            android:onClick="btRegisterClick"
             android:textSize="18sp" android:textColor="#ffffff"/>
         <Button
             android:id="@+id/btToLoign"
@@ -130,7 +131,6 @@
             android:background="@drawable/btn_long_white"
             android:text="已有账号"
             android:textColor="@color/colorAccent"
-            android:onClick="btRegisterClick"
             android:textSize="18sp" />
 
     </LinearLayout>

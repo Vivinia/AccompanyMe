@@ -32,7 +32,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorGray"></RelativeLayout>
+                android:background="@color/colorGray">
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,6 +47,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:tint="@color/colorPrimary"
                     android:background="@drawable/xml_btn_color_light"
                     android:src="@drawable/ic_album_black_24dp" />
 
@@ -53,6 +56,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:tint="@color/colorPrimary"
                     android:background="@drawable/xml_btn_color_light"
                     android:src="@drawable/ic_menu_gallery" />
 
@@ -60,6 +64,7 @@
                     android:id="@+id/acib_intelligence"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:tint="@color/colorPrimary"
                     android:layout_weight="1"
                     android:background="@drawable/xml_btn_color_light"
                     android:src="@drawable/ic_color_lens_black_24dp" />

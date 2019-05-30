@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f7f7f7"
     tools:context="com.example.weixu.accompanyme.InsertDynamicActivity">
 
     <EditText
@@ -12,10 +13,10 @@
         android:layout_height="200dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
         android:background="@drawable/text_input"
         android:ems="150"
-        android:gravity="top" />
+        android:gravity="top"
+        android:padding="20dp" />
 
     <ImageView
         android:id="@+id/ivDynamicPicture"
@@ -25,8 +26,19 @@
         android:layout_margin="10dp"
         android:background="@drawable/btn_long_grey"
         android:onClick="InsertDynamicOnclick"
-        android:padding="20dp"
+        android:padding="30dp"
         android:src="@drawable/add_white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etDynamicContent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@+id/ivDynamicPicture"
+        android:text="添加图片"
+        android:textColor="#ccc"
+        android:textSize="16dp" />
 
     <Button
         android:id="@+id/btDynamicSubmit"
@@ -34,12 +46,12 @@
         android:layout_height="45dp"
         android:layout_below="@+id/ivDynamicPicture"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
         android:background="@drawable/xml_btn_color_gray"
+        android:enabled="false"
         android:onClick="InsertDynamicOnclick"
         android:text="发表"
-        android:enabled="false"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

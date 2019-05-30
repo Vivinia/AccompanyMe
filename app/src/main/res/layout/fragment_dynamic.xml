@@ -10,49 +10,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:divider="#0000"></ListView>
+        android:divider="#0000">
 
-    <!-- <android.support.design.widget.FloatingActionButton
-         android:id="@+id/fabOpenCamera"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="bottom|end"
-         android:layout_margin="@dimen/fab_margin"
-         android:elevation="0dp"
-         android:outlineProvider="none"
-         android:src="@drawable/ic_menu_camera"
-         android:translationZ="0dp"
-         android:visibility="invisible" />
+    </ListView>
 
-     <android.support.design.widget.FloatingActionButton
-         android:id="@+id/fabOpenAlbum"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="bottom|end"
-         android:layout_margin="@dimen/fab_margin"
-         android:elevation="0dp"
-         android:outlineProvider="none"
-         android:src="@drawable/ic_menu_gallery"
-         android:translationZ="0dp"
-         android:visibility="invisible" />
+    <Button
+        android:id="@+id/btOnlyMe"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/sharp_white_half_circular"
+        android:elevation="3dp"
+        android:paddingLeft="3dp"
+        android:text="只看自己"
+        android:textColor="@color/colorPrimaryDark"
+        android:translationZ="3dp" />
 
-     <android.support.design.widget.FloatingActionButton
-         android:id="@+id/fabInsertPicture"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="bottom|end"
-         android:layout_margin="@dimen/fab_margin"
-         android:src="@drawable/ic_menu_send" />
-         -->
-    <ImageView
-        android:id="@+id/ivOpenInsertDynamic"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:background="@drawable/xml_btn_color_primary"
-        android:elevation="2dp"
-        android:padding="6dp"
-        android:src="@drawable/ic_camera_black_24dp"
-        android:translationZ="2dp" />
+
+    <RelativeLayout
+        android:layout_width="98dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/sharp_white_half_circular"
+        android:elevation="3dp"
+        android:translationZ="2dp">
+
+        <Button
+            android:id="@+id/btIntoCamera"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="60dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:background="#fff"
+            android:text="相册"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/ivOpenInsertDynamic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/xml_btn_color_primary"
+            android:padding="6dp"
+            android:src="@drawable/ic_camera_black_24dp" />
+    </RelativeLayout>
+
 </FrameLayout>

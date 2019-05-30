@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#fdfdfd">
@@ -13,28 +14,36 @@
         android:elevation="1dp">
 
         <ImageView
-            android:id="@+id/videoImage"
+            android:id="@+id/ivPicture"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_menu_camera" />
-
+            android:scaleType="center"
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/video_name"
-            android:layout_width="match_parent"
+            android:id="@+id/tvClass"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/videoImage"
+            android:layout_toRightOf="@+id/ivPicture"
+            android:text="汽车"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="视频名称"
+            android:layout_marginTop="5dp"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp" />
 
-
+        <TextView
+            android:id="@+id/tvNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="10"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
     </RelativeLayout>
 </RelativeLayout>
