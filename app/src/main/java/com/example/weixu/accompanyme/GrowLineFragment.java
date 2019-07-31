@@ -6,10 +6,13 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.weixu.table.GrownLine;
 import com.example.weixu.view.MyMarkerView;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
@@ -20,6 +23,12 @@ import com.github.mikephil.charting.utils.XLabels;
 import com.github.mikephil.charting.utils.YLabels;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 
 public class GrowLineFragment extends Fragment {
@@ -32,6 +41,7 @@ public class GrowLineFragment extends Fragment {
 
     private SharedPreferences pref;
     private String userBabyName,babySex;
+    private String userEmail;
 
     public GrowLineFragment() {
     }
@@ -47,6 +57,7 @@ public class GrowLineFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bmob.initialize(getActivity(), "96556b6d6dbe89f2ff4a7c1553d882ec");
         mPage = getArguments().getInt(ARGS_PAGE);//设置第几个tab
         getSex();
     }
@@ -79,6 +90,7 @@ public class GrowLineFragment extends Fragment {
         pref = getActivity().getSharedPreferences("userBabyInfo", Context.MODE_PRIVATE);
         userBabyName = pref.getString("userBabyName", "");
         babySex=pref.getString("userBabySex","");
+        userEmail=pref.getString("userParentEmail","");
     }
 
     private void setType(String typeStr,String unitStr) {
@@ -147,52 +159,98 @@ public class GrowLineFragment extends Fragment {
 
     private void setStatureData() {
         //在这里设置身高的信息
-        SharedPreferences pref=getActivity().getSharedPreferences("babyGrowInfo", Context.MODE_PRIVATE);
+       /* SharedPreferences pref=getActivity().getSharedPreferences("babyGrowInfo", Context.MODE_PRIVATE);
         String babyZero=pref.getInt("tallZero",0)+"";
         String babyOne=pref.getInt("tallOne",0)+"";
         String babyTwo=pref.getInt("tallTwo",0)+"";
         String babyThree=pref.getInt("tallThree",0)+"";
         String babyFour=pref.getInt("tallFour",0)+"";
-        String babyFive=pref.getInt("tallFive",0)+"";
+        String babyFive=pref.getInt("tallFive",0)+"";*/
+        Toast.makeText(getActivity(),"查询",Toast.LENGTH_SHORT).show();
 
-        String[] babAge = {"0","1","2","3","4","5"};     //连线的x轴数据
-        String[] babyTall = {babyZero,babyOne,babyTwo,babyThree,babyFour,babyFive};
-        LineData data=new LineData(babAge,setLine(babAge,babyTall,1,"宝宝身高"));    //创建LineData实体类并添加第一条曲线
-        if(babySex.equals("男")) {
-            String[] usuaTallBoy = {"50", "75", "88", "95", "102", "110"};//连线的y轴数据
-            data.addDataSet(setLine(babAge,usuaTallBoy,2,"正常身高"));      //添加第二条曲线
-        }
-        else {
-            String[] usuaTallGirl = {"50", "73", "85", "94", "102", "108"};//连线的y轴数据
-            data.addDataSet(setLine(babAge,usuaTallGirl,2,"正常身高"));      //添加第二条曲线
-        }
+        BmobQuery<GrownLine> query=new BmobQuery<GrownLine>();
+        query.addWhereEqualTo("userEmail",userEmail);   //根据邮箱账号查询宝宝身体数据
+        query.order("babyAge");
+        query.findObjects(new FindListener<GrownLine>() {
+            @Override
+            public void done(List<GrownLine> list, BmobException e) {
+               try {
+                   Toast.makeText(getActivity(),"查身高啦",Toast.LENGTH_SHORT).show();
+                   String[] babyTall = new String[6];
+                   for(int i=0;i<list.size();i++) {               //获取宝宝身高，按年龄排序
+                        int age=list.get(i).getBabyAge();    //先获取每个数据的年龄
+                        babyTall[age] = list.get(i).getBabyTall();     //对应年龄的身高
+                   }
+                   for(int i=0;i<6;i++){
+                       if(babyTall[i]==null||babyTall[i].equals(""))
+                           babyTall[i]="0";
+                   }
 
+                   String[] babAge = {"0","1","2","3","4","5"};     //连线的x轴数据
+                   //String[] babyTall = {babyZero,babyOne,babyTwo,babyThree,babyFour,babyFive};
+                   LineData data=new LineData(babAge,setLine(babAge,babyTall,1,"宝宝身高"));    //创建LineData实体类并添加第一条曲线
+                   if(babySex.equals("男")) {
+                       String[] usuaTallBoy = {"50", "75", "88", "95", "102", "110"};//连线的y轴数据
+                       data.addDataSet(setLine(babAge,usuaTallBoy,2,"正常身高"));      //添加第二条曲线
+                   }
+                   else {
+                       String[] usuaTallGirl = {"50", "73", "85", "94", "102", "108"};//连线的y轴数据
+                       data.addDataSet(setLine(babAge,usuaTallGirl,2,"正常身高"));      //添加第二条曲线
+                   }
+                   chartTall.setData(data);
+               }catch (Exception ex){
+                   e.printStackTrace();
+               }
+            }
+        });
 
-        chartTall.setData(data);
     }
 
     private void setWeightData() {
         //在这里设置体重的信息
-        SharedPreferences pref=getActivity().getSharedPreferences("babyGrowInfo", Context.MODE_PRIVATE);
+       /* SharedPreferences pref=getActivity().getSharedPreferences("babyGrowInfo", Context.MODE_PRIVATE);
         String babyZero=pref.getInt("WeightZero",0)+"";
         String babyOne=pref.getInt("WeightOne",0)+"";
         String babyTwo=pref.getInt("WeightTwo",0)+"";
         String babyThree=pref.getInt("WeightThree",0)+"";
         String babyFour=pref.getInt("WeightFour",0)+"";
-        String babyFive=pref.getInt("WeightFive",0)+"";
+        String babyFive=pref.getInt("WeightFive",0)+"";*/
+
+        BmobQuery<GrownLine> query=new BmobQuery<>();
+        query.addWhereEqualTo("userEmail",userEmail);   //根据邮箱账号查询宝宝身体数据
+        query.order("babyAge");
+        query.findObjects(new FindListener<GrownLine>() {
+            @Override
+            public void done(List<GrownLine> list, BmobException e) {
+               try {
+                   String[] babyWeight = new String[6];
+                   for(int i=0;i<list.size();i++) {               //获取宝宝身高，按年龄排序
+                       int age=list.get(i).getBabyAge();    //先获取每个数据的年龄
+                       babyWeight[age] = list.get(i).getBabyWeight();     //对应年龄的身高
+                   }
+                   for(int i=0;i<6;i++){
+                       if(babyWeight[i]==null||babyWeight[i].equals(""))
+                           babyWeight[i]="0";
+                   }
+
+                   String[] babAge = {"0","1","2","3","4","5"};     //连线的x轴数据
+                   //String[] babyWeight = {babyZero,babyOne,babyTwo,babyThree,babyFour,babyFive};
+                   LineData data=new LineData(babAge,setLine(babAge,babyWeight,1,"宝宝体重"));    //创建LineData实体类并添加第一条曲线
+                   if(babySex.equals("男")) {
+                       String[] usuaWeightBoy = {"3.3", "10.0", "13.0", "15.0", "16.0", "19.0"};//连线的y轴数据
+                       data.addDataSet(setLine(babAge,usuaWeightBoy,2,"正常体重"));      //添加第二条曲线
+                   }else{
+                       String[] usuaWeightGirl = {"3.0", "9.5", "12.0", "14.0", "16.0", "18.0"};//连线的y轴数据
+                       data.addDataSet(setLine(babAge,usuaWeightGirl,2,"正常体重"));      //添加第二条曲线
+                   }
+                   chartTall.setData(data);
+               }catch (Exception ex) {
+                   Log.i("myLog", "e:" + ex);
+               }
+            }
+        });
 
 
-        String[] babAge = {"0","1","2","3","4","5"};     //连线的x轴数据
-        String[] babyWeight = {babyZero,babyOne,babyTwo,babyThree,babyFour,babyFive};
-        LineData data=new LineData(babAge,setLine(babAge,babyWeight,1,"宝宝体重"));    //创建LineData实体类并添加第一条曲线
-        if(babySex.equals("男")) {
-            String[] usuaWeightBoy = {"3.3", "10.0", "13.0", "15.0", "16.0", "19.0"};//连线的y轴数据
-            data.addDataSet(setLine(babAge,usuaWeightBoy,2,"正常体重"));      //添加第二条曲线
-        }else{
-            String[] usuaWeightGirl = {"3.0", "9.5", "12.0", "14.0", "16.0", "18.0"};//连线的y轴数据
-            data.addDataSet(setLine(babAge,usuaWeightGirl,2,"正常体重"));      //添加第二条曲线
-        }
-        chartTall.setData(data);
     }
 
     //画线

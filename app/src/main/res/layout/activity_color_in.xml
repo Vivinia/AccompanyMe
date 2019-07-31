@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
     <com.example.weixu.view.MyRadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -114,20 +114,50 @@
         android:id="@+id/civColorIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center"
-        app:srcCompat="@drawable/img_duolaameng" />
+        app:srcCompat="@drawable/bag" />
 
-    <Button
-        android:id="@+id/btClean"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/xml_btn_color_primary"
-        android:elevation="3dp"
-        android:onClick="btClick"
-        android:text="清空"
-        android:textColor="@color/white"
-        android:textSize="16dp"
-        android:translationZ="3dp" />
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btSearchColorPicture"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/xml_btn_color_primary"
+            android:elevation="3dp"
+            android:onClick="btClick"
+            android:text="选择"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:translationZ="3dp" />
+
+        <Button
+            android:id="@+id/btClean"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/xml_btn_color_primary"
+            android:elevation="3dp"
+            android:onClick="btClick"
+            android:text="清空"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:translationZ="3dp" />
+    </LinearLayout>
+</RelativeLayout>

@@ -1,12 +1,18 @@
 package com.example.weixu.accompanyme;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.weixu.service.PanioMusic;
 
@@ -18,6 +24,8 @@ public class PlayPanioActivity extends AppCompatActivity {
     private boolean havePlayed[];// 是否已经播放了声音，当手指在同一个按钮内滑动，且已经发声，就为true
     private View keys;// 按钮们所在的视图
     private int pressedkey[];
+    private String[] scoreList={"一直哈巴狗","欢乐颂","粉刷匠","小雨沙沙","雪人爸妈是雪花","小星星"};//单选列表
+    private int numberScore=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,9 +243,60 @@ public class PlayPanioActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.ab_panio_score:
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                /*参数一位单选列表文字，参数二为默认第几个选中（-1默认不选中），参数三是创建监听器*/
+                builder.setSingleChoiceItems(scoreList,-1,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        numberScore=which;
+                        setImgScore(numberScore);
+                        dialog.dismiss();
+                    }
+                });
+                /*添加对话框中取消按钮点击事件*/
+                builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();//关闭对话框
+                    }
+                });
+                AlertDialog dialog=builder.create();//获取dialog
+                dialog.show();//显示对话框
+                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setImgScore(int numberScore) {
+        LayoutInflater inflater=LayoutInflater.from(this);
+        View view=inflater.inflate(R.layout.score_dialog,null);//获取自定义布局
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        ImageView ivItemScore=view.findViewById(R.id.ivItemScore);
+        if(numberScore==0){
+            ivItemScore.setImageResource(R.drawable.dog);
+        }else if(numberScore==1){
+            ivItemScore.setImageResource(R.drawable.happy);
+        }else if(numberScore==2){
+            ivItemScore.setImageResource(R.drawable.people);
+        }else if(numberScore==3){
+            ivItemScore.setImageResource(R.drawable.rain);
+        }else if(numberScore==4){
+            ivItemScore.setImageResource(R.drawable.snow);
+        }else if(numberScore==5){
+            ivItemScore.setImageResource(R.drawable.start);
+        }
+        builder.setView(view);//设置自定义样式布局到对话框
+        AlertDialog dialog=builder.create();//获取dialog
+        dialog.show();//显示对话框
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_panio_video, menu);
+        return true;
+    }
+
 }

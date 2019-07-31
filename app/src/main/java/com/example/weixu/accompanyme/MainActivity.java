@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity
     private EntertainmentFragment entertainmentFragment;
     private DynamicFragment dynamicFragment;
     private IntelligenceFragment intelligenceFragment;
-    private String userBabyName,babySex,imgUrl, userParentEmail, objectId;
+    private String userBabyName, babySex, imgUrl, userParentEmail, objectId;
     private int babyAge;
-    private TextView tvUserBabyName,tvBabySex,tvBabyAge;
+    private TextView tvUserBabyName, tvBabySex, tvBabyAge;
     private NavigationView navigationView;
-    private ImageView ivUserBabyHead,ivCleanUserInfo;
+    private ImageView ivUserBabyHead, ivCleanUserInfo;
     private Intent intent;
     private User user;
 
@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity
         InitControl();//初始化控件
         setDefaultFragment();//设置初始fragment
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        pref = getSharedPreferences("userBabyInfo", MODE_PRIVATE);
 
+        imgUrl = pref.getString("userBabyHeadUrl", "");
     }
 
     @Override
@@ -98,17 +100,18 @@ public class MainActivity extends AppCompatActivity
         // 获得SharedPreferences对象
         pref = getSharedPreferences("userBabyInfo", MODE_PRIVATE);
         userBabyName = pref.getString("userBabyName", "");
-        userParentEmail=pref.getString("userParentEmail", "");    //获取保存下的登录邮箱
-        babyAge=pref.getInt("userBabyAge",0);
-        babySex=pref.getString("userBabySex","");
-        imgUrl=pref.getString("userBabyHeadUrl","");
-        if (!userBabyName .equals("")) {
+        userParentEmail = pref.getString("userParentEmail", "");    //获取保存下的登录邮箱
+        babyAge = pref.getInt("userBabyAge", 0);
+        babySex = pref.getString("userBabySex", "");
+        if (!userBabyName.equals("")) {
             tvUserBabyName.setText(userBabyName);
-            tvBabySex.setText("性别:"+babySex);
-            tvBabyAge.setText("年龄:"+babyAge);
+            tvBabySex.setText("性别:" + babySex);
+            tvBabyAge.setText("年龄:" + babyAge);
             ivCleanUserInfo.setVisibility(View.VISIBLE);    //退出登录按钮设置可见
-            if(!imgUrl.equals(""))     //不为空，则有图片信息
-                Glide.with(MainActivity.this).load(imgUrl).into(ivUserBabyHead);   //显示头像
+            if (!imgUrl.equals("")) {     //不为空，则有图片信息
+                String newStr = imgUrl.replaceFirst("bmob-cdn-10503.b0.upaiyun.com", "bmob.dustray.cn");
+                Glide.with(MainActivity.this).load(newStr).into(ivUserBabyHead);   //显示头像
+            }
         }
     }
 
@@ -134,12 +137,12 @@ public class MainActivity extends AppCompatActivity
         acibDynamic = (AppCompatImageButton) findViewById(R.id.acib_dynamic);
         acibIntelligence = (AppCompatImageButton) findViewById(R.id.acib_intelligence);
 
-        View view=navigationView.getHeaderView(0);
+        View view = navigationView.getHeaderView(0);
         tvUserBabyName = (TextView) view.findViewById(R.id.tvUserBabyName);
         ivUserBabyHead = (ImageView) view.findViewById(R.id.ivUserBabyHead);
-        ivCleanUserInfo= (ImageView) view.findViewById(R.id.ivCleanUserInfo);
-        tvBabySex= (TextView) view.findViewById(R.id.tvBabySex);
-        tvBabyAge= (TextView) view.findViewById(R.id.tvBabyAge);
+        ivCleanUserInfo = (ImageView) view.findViewById(R.id.ivCleanUserInfo);
+        tvBabySex = (TextView) view.findViewById(R.id.tvBabySex);
+        tvBabyAge = (TextView) view.findViewById(R.id.tvBabyAge);
 
         acibEntertainment.setOnClickListener(this);
         acibDynamic.setOnClickListener(this);
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.ab_search_music) {
-            Intent intent = new Intent(this, SearchMusicActivity.class);
+            Intent intent = new Intent(this, MusicActivity_.class);
             startActivity(intent);
             return true;
         }
@@ -205,11 +208,37 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_babyGrowLine) {
-            if(userBabyName.equals("")){        //如果没有登录，则不能点开圈子
-                intent=new Intent(MainActivity.this,LoginActivity.class);
+            if (userBabyName.equals("")) {        //如果没有登录，则不能点开圈子
+                intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
-            }else {
-                Intent intent=new Intent(MainActivity.this,GrowLineActivity.class);
+            } else {
+                Intent intent = new Intent(MainActivity.this, GrowLineActivity.class);
+                startActivity(intent);
+            }
+        } else {
+            if (id == R.id.nav_babyFood) {    //饮食
+                Intent intent = new Intent(MainActivity.this, ArticleListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ArticleClass", "1");
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else if (id == R.id.nav_babyHealthy) {    //健康
+                Intent intent = new Intent(MainActivity.this, ArticleListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ArticleClass", "2");
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else if (id == R.id.nav_babyLife) {    //生活
+                Intent intent = new Intent(MainActivity.this, ArticleListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ArticleClass", "3");
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else if (id == R.id.nav_babyEarlyTeach) {     //早教
+                Intent intent = new Intent(MainActivity.this, ArticleListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("ArticleClass", "4");
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         }
@@ -273,10 +302,10 @@ public class MainActivity extends AppCompatActivity
                 transaction.replace(R.id.frag_main_content, entertainmentFragment);
                 break;
             case R.id.acib_dynamic:
-                if(userBabyName.equals("")){        //如果没有登录，则不能点开圈子
-                    intent=new Intent(MainActivity.this,LoginActivity.class);
+                if (userBabyName.equals("")) {        //如果没有登录，则不能点开圈子
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     if (dynamicFragment == null)
                         dynamicFragment = new DynamicFragment();
                     transaction.replace(R.id.frag_main_content, dynamicFragment);
@@ -295,7 +324,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.ivCleanUserInfo:     //退出登录
                 cleanInfo();
-                intent=new Intent(MainActivity.this,MainActivity.class);
+                intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -305,13 +334,13 @@ public class MainActivity extends AppCompatActivity
 
     //清空信息
     private void cleanInfo() {
-        editor=pref.edit();
-        editor.putString("userBabyHeadUrl",null);
-        editor.putString("userBabyName",null);
-        editor.putString("userBabySex",null);
-        editor.putString("userParentEmail",null);
-        editor.putString("userParentPass",null);
-        editor.putInt("userBabyAge",0);
+        editor = pref.edit();
+        editor.putString("userBabyHeadUrl", null);
+        editor.putString("userBabyName", null);
+        editor.putString("userBabySex", null);
+        editor.putString("userParentEmail", null);
+        editor.putString("userParentPass", null);
+        editor.putInt("userBabyAge", 0);
         editor.commit();
     }
 
@@ -346,16 +375,17 @@ public class MainActivity extends AppCompatActivity
                 case 1:
                     Uri uri = data.getData();
                     // 将获取到的uri转换为String型
-                    String[] images = { MediaStore.Images.Media.DATA };// 将图片URI转换成存储路径
+                    String[] images = {MediaStore.Images.Media.DATA};// 将图片URI转换成存储路径
                     Cursor cursor = this
                             .managedQuery(uri, images, null, null, null);
                     int index = cursor
                             .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                     cursor.moveToFirst();
                     String img_url = cursor.getString(index);
-                    imgUrl=img_url;      //保存为全局变量
+
+                    imgUrl = img_url;      //保存为全局变量
                     //显示图片
-                    showPicture(img_url);
+                    //showPicture(img_url);
                     //根据邮箱查询用户登陆信息
                     getInfoByEmail(img_url);
 
@@ -366,12 +396,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getInfoByEmail(final String img_url) {
-        BmobQuery<User> query=new BmobQuery<User>();
-        query.addWhereEqualTo("userParentEmail",userParentEmail);
-        query.findObjects(new FindListener<User>(){
+        BmobQuery<User> query = new BmobQuery<User>();
+        query.addWhereEqualTo("userParentEmail", userParentEmail);
+        query.findObjects(new FindListener<User>() {
             @Override
             public void done(List<User> list, BmobException e) {
-                if(e==null) {
+                if (e == null) {
                     if (list.size() > 0) {
                         for (User u : list) {
                             objectId = u.getObjectId();   //获取登录的id
@@ -379,25 +409,25 @@ public class MainActivity extends AppCompatActivity
                     }
                     //图片上传
                     uplodePicture(img_url);
-                }else{
-                    Toast.makeText(MainActivity.this, "objectId获取失败", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "设置失败", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
     private void uplodePicture(String img_url) {
-        final BmobFile icon=new BmobFile(new File(img_url));
+        final BmobFile icon = new BmobFile(new File(img_url));
         icon.upload(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
-                if(e==null){
+                if (e == null) {
                     user = new User();
-                    Toast.makeText(MainActivity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this,"图片上传成功",Toast.LENGTH_SHORT).show();
                     user.setUserBabyHead(icon);
                     updatePicture();     //修改
-                }else{
-                    Toast.makeText(MainActivity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "图片上传失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -407,11 +437,12 @@ public class MainActivity extends AppCompatActivity
         user.update(objectId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                if(e==null){
-                    Toast.makeText(MainActivity.this,"头像修改成功",Toast.LENGTH_SHORT).show();
+                if (e == null) {
+                    Toast.makeText(MainActivity.this, "头像修改成功", Toast.LENGTH_SHORT).show();
                     //重新保存当前用户更改的信息
                     saveUpdatePicture();
-                }else{
+                } else {
+                    Toast.makeText(MainActivity.this, "头像修改失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -419,9 +450,16 @@ public class MainActivity extends AppCompatActivity
 
     //重新保存当前用户更改的信息
     private void saveUpdatePicture() {
-        editor=pref.edit();
-        editor.putString("userBabyHeadUrl",imgUrl);   //保存图片url
+        // ivUserBabyHead.setImageBitmap(BitmapFactory.decodeFile(imgUrl));
+
+        editor = pref.edit();
+        editor.putString("userBabyHeadUrl", imgUrl);   //保存图片url
         editor.commit();   //提交
+       // Toast.makeText(MainActivity.this, "xxx" + imgUrl, Toast.LENGTH_SHORT).show();
+        if (!imgUrl.equals("")) {     //不为空，则有图片信息
+            String newStr = imgUrl.replaceFirst("bmob-cdn-10503.b0.upaiyun.com", "bmob.dustray.cn");
+            Glide.with(MainActivity.this).load(newStr).into(ivUserBabyHead);   //显示头像
+        }
     }
 
     //显示图片

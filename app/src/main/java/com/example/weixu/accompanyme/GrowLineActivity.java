@@ -54,6 +54,7 @@ public class GrowLineActivity extends AppCompatActivity  {
                 Intent intent=new Intent(GrowLineActivity.this,InsertChartInfoActivity.class);
                 //这里跳转应该传值mPage，好在插入时区分身高还是体重
                 startActivity(intent);
+                finish();
             default:
                 break;
         }

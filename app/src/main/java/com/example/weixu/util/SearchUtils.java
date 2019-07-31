@@ -20,9 +20,9 @@ import java.util.List;
 
 public class SearchUtils {
     /** 搜索关键字地址 */
-    public static String KEY_SEARCH_URL = "http://www.xiami.com/search/song?key=";
+    public static String KEY_SEARCH_URL = "https://www.xiami.com/search/search?key=";
     /** ID接口地址 */
-    public static String ID_SEARCH_URL = "http://www.xiami.com/song/playlist/id/";
+    public static String ID_SEARCH_URL = "https://www.xiami.com/song/playlist/id/";
 
     /**
      * 抓取歌曲id
@@ -77,7 +77,7 @@ public class SearchUtils {
             String postUrl = ID_SEARCH_URL + ids.get(i);
             try {
                 Document d = Jsoup.connect(postUrl).get();// 连接相应ID的接口地址
-                Elements element = d.select("trackList");
+                Elements element = d.select("data");
                 for (Element e : element) {
                     MusicEntity music = new MusicEntity();
                     music.setMusicId(ids.get(i));

@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_babyGrowLine"
             android:icon="@drawable/ic_show_chart_black_24dp"
             android:title="成长曲线" />
+        <item android:title="宝宝资讯" >
+            <menu>
+                <item
+                android:id="@+id/nav_babyFood"
+                android:icon="@drawable/ic_btn_food"
+                android:title="饮食"/>
+                <item
+                    android:id="@+id/nav_babyHealthy"
+                    android:icon="@drawable/ic_btn_health"
+                    android:title="健康"/>
+                <item
+                    android:id="@+id/nav_babyLife"
+                    android:icon="@drawable/ic_btn_life"
+                    android:title="生活 "/>
+                <item
+                    android:id="@+id/nav_babyEarlyTeach"
+                    android:icon="@drawable/ic_btn_edu"
+                    android:title="早教"/>
+            </menu>
+        </item>
     </group>
 
 </menu>

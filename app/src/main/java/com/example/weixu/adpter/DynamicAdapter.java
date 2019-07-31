@@ -69,8 +69,8 @@ public class DynamicAdapter extends ArrayAdapter<Dynamic> {
         viewHolder.tvDynamicBabyName.setText(dynamic.getDynamicUserName());
         viewHolder.tvDynamicContent.setText(dynamic.getDynamicContent());
         viewHolder.tvDynamicDate.setText(dynamic.getCreatedAt());
-
-        Glide.with(con).load(dynamic.getDynamicPicture().getUrl()).into(viewHolder.ivShowDynamicPicture);
+//+ "!fnfx/300x300"
+        Glide.with(con).load(dynamic.getDynamicPicture().getUrl()+"!/fh/200").skipMemoryCache(false).into(viewHolder.ivShowDynamicPicture);
         viewHolder.ivShowDynamicPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

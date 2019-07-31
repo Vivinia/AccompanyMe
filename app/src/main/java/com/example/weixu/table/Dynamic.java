@@ -10,7 +10,16 @@ import cn.bmob.v3.datatype.BmobFile;
 public class Dynamic extends BmobObject {
     private String dynamicUserName;
     private String dynamicContent;
+    private String userEmail;
     private BmobFile dynamicPicture;
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
     public String getDynamicUserName() {
         return dynamicUserName;

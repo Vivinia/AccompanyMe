@@ -5,18 +5,23 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.weixu.adpter.MyPictureListAdapter;
 import com.example.weixu.adpter.VideoLinkAdapter;
 import com.example.weixu.table.VideoLink;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -30,6 +35,7 @@ public class EntertainmentPagerFragment extends Fragment {
     private Intent intent;
     private SharedPreferences pref;
     private ListView lvVideoLink;
+    private RecyclerView rvShow;
 
     private int mPage;//第几个Tab
     private TextView textView;
@@ -60,32 +66,53 @@ public class EntertainmentPagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARGS_PAGE);//设置第几个tab
 
-        getData();
+
     }
 
     //查询表中儿歌内容
     private void getData() {
         BmobQuery<VideoLink> query = new BmobQuery<VideoLink>();
         query.order("-updatedAt");
-        if (mPage == 1)
-            query.addWhereEqualTo("webVideoInfoName", "1");
-        else
-            query.addWhereEqualTo("webVideoInfoName", "2");
-        query.findObjects(
-                new FindListener<VideoLink>() {
-                    @Override
-                    public void done(List<VideoLink> list, BmobException e) {
-                        try {
-                            VideoLinkAdapter adapter = new VideoLinkAdapter(
-                                    getActivity(),
-                                    R.layout.video_listview_item, list);
-                            lvVideoLink.setAdapter(adapter);
-                            item(list);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+        if(mPage==1||mPage==2) {
+            if (mPage == 1)
+                query.addWhereEqualTo("webVideoInfoName", "1");
+            else
+                query.addWhereEqualTo("webVideoInfoName", "2");
+            query.findObjects(
+                    new FindListener<VideoLink>() {
+                        @Override
+                        public void done(List<VideoLink> list, BmobException e) {
+                            try {
+                                for(VideoLink d :list){
+                                    String newStr=d.getWebPicture().getUrl().replaceFirst("bmob-cdn-10503.b0.upaiyun.com","bmob.dustray.cn");
+                                    //newStr+="!fnfx/300x300";
+                                    d.getWebPicture().setUrl(newStr);
+                                }
+                                VideoLinkAdapter adapter = new VideoLinkAdapter(
+                                        getActivity(),
+                                        R.layout.video_listview_item, list);
+                                lvVideoLink.setAdapter(adapter);
+                                item(list);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
                         }
-                    }
-                });
+                    });
+        }else{
+            ArrayList<String> mClassData=new ArrayList<>();
+            mClassData.add("水果");
+            mClassData.add("动物");
+            mClassData.add("交通工具");
+            mClassData.add("生活用品");
+            ArrayList<String> mNumberData=new ArrayList<>();
+            for(int i=0;i<4;i++)
+                mNumberData.add("3");
+            RecyclerView.LayoutManager mLayoutManager;
+            mLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+            RecyclerView.Adapter pictureAdapter=new MyPictureListAdapter(mClassData,mNumberData,getActivity());
+            rvShow.setLayoutManager(mLayoutManager);
+            rvShow.setAdapter(pictureAdapter);
+        }
 
     }
 
@@ -111,6 +138,8 @@ public class EntertainmentPagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_entertainment_pager, container, false);
         lvVideoLink = (ListView) view.findViewById(R.id.lvVideoLink);
+        rvShow=view.findViewById(R.id.rvShow);
+        getData();//把这个放到oncreateView
         return view;//这里修不修改应该没影响
     }
 

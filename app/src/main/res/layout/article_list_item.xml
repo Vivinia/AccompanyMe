@@ -27,6 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/ivArticlePicture"
         android:paddingLeft="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:paddingRight="10dp"
         android:layout_marginTop="5dp"
         android:text="文章名称"

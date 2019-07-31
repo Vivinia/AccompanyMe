@@ -9,6 +9,6 @@
     <stroke
         android:dashGap="0dp"
         android:width="1dp"
-        android:color="#909090" />
+        android:color="@color/colorPrimary" />
 
 </shape>

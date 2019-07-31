@@ -22,7 +22,7 @@ import com.example.weixu.table.MusicEntity;
 
 import java.io.IOException;
 
-public class MusicDetailActivity extends Activity implements
+public class  MusicDetailActivity extends Activity implements
        OnBufferingUpdateListener, OnCompletionListener, OnPreparedListener {
     private MusicEntity music;
     public MediaPlayer mediaPlayer; // 媒体播放器

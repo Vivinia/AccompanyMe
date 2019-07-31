@@ -12,8 +12,8 @@ import com.example.weixu.accompanyme.EntertainmentPagerFragment;
 
 public class EntertainmentFragmentPagerAdapter extends FragmentPagerAdapter {
     /*这三个都是自己添加*/
-    public final int COUNT = 2;//tab的数量
-    private String[] titles = new String[]{"唱儿歌", "听故事"};//tab名
+    public final int COUNT = 3;//tab的数量
+    private String[] titles = new String[]{"唱儿歌", "听故事","识图片"};//tab名
 
 
     public EntertainmentFragmentPagerAdapter(FragmentManager fm) {

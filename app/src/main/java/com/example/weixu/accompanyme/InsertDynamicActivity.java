@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.weixu.table.CameraPhoto;
 import com.example.weixu.table.Dynamic;
 
 import java.io.ByteArrayInputStream;
@@ -38,6 +39,7 @@ public class InsertDynamicActivity extends AppCompatActivity {
     private Dynamic dynamic;
     private Intent intent;
     private Button btDynamicSubmit;
+    private CameraPhoto photo;
 
     private boolean isUploadOver=false;
 
@@ -75,13 +77,25 @@ public class InsertDynamicActivity extends AppCompatActivity {
         // 获得SharedPreferences对象
         pref = getSharedPreferences("userBabyInfo", MODE_PRIVATE);
         String dynamicUserName = pref.getString("userBabyName", "");
+        String dynamicUserEmail=pref.getString("userParentEmail","");// 登录的邮箱名
         if (dynamicContent.equals("")) {
             Toast.makeText(InsertDynamicActivity.this, "输入内容不能为空",
                     Toast.LENGTH_SHORT).show();
             return;
         }
+        /*将图片保存到动态圈*/
+        photo.setCameraClass("1");
+        photo.setUserEmail(dynamicUserEmail);
+        photo.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                Toast.makeText(InsertDynamicActivity.this, "动态圈图片保存成功",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         dynamic.setDynamicUserName(dynamicUserName);
         dynamic.setDynamicContent(dynamicContent);
+        dynamic.setUserEmail(dynamicUserEmail);
         dynamic.save(new SaveListener<String>() {
             @Override
             public void done(String s, BmobException e) {
@@ -123,11 +137,15 @@ public class InsertDynamicActivity extends AppCompatActivity {
     //显示图片
     private void showPicture(String imgpath) {
         ivDynamicPicture.setImageBitmap(BitmapFactory.decodeFile(imgpath));
+        ivDynamicPicture.setPadding(0,0,0,0);
+        ivDynamicPicture.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
     //图片上传
     private void upload(String imgpath){
         final BmobFile icon=new BmobFile(new File(imgpath));
+
+    //    Toast.makeText(InsertDynamicActivity.this,"图片上传路径"+icon.getFilename(),Toast.LENGTH_SHORT).show();
         icon.upload(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
@@ -138,6 +156,8 @@ public class InsertDynamicActivity extends AppCompatActivity {
                     btDynamicSubmit.setEnabled(true);
                     btDynamicSubmit.setClickable(true);
                     btDynamicSubmit.setBackgroundResource(R.drawable.xml_btn_color_accent);
+                    photo=new CameraPhoto();   //创建动态圈表，将动态中的图片保存
+                    photo.setUserPhoto(icon);
                 }else{
                     Toast.makeText(InsertDynamicActivity.this,"图片上传失败",Toast.LENGTH_SHORT).show();
                 }

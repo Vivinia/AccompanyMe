@@ -25,9 +25,11 @@ public class ColourImageView extends AppCompatImageView {
 
     private int myColor;        //接收选择的颜色
     private boolean myColorType;    //判断是否选择颜色，选择为true，未选择为false
+
     public void setMyColor(int myColor) {
         this.myColor = myColor;
     }
+
     public void setMyColorType(boolean myColorType) {
         this.myColorType = myColorType;
     }
@@ -37,6 +39,7 @@ public class ColourImageView extends AppCompatImageView {
     private int mBorderColor = -1;
     private boolean hasBorderColor = false;
     private Stack<Point> mStacks = new Stack<Point>();   //栈
+
     public ColourImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -45,9 +48,9 @@ public class ColourImageView extends AppCompatImageView {
         hasBorderColor = (mBorderColor != -1);
         ta.recycle();
     }
+
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         int viewWidth = getMeasuredWidth();
@@ -61,35 +64,34 @@ public class ColourImageView extends AppCompatImageView {
         Bitmap bm = drawable.getBitmap();
         mBitmap = Bitmap.createScaledBitmap(bm, getMeasuredWidth(), getMeasuredHeight(), false);
     }
+
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
+    public boolean onTouchEvent(MotionEvent event) {
         final int x = (int) event.getX();
         final int y = (int) event.getY();
-        if (event.getAction() == MotionEvent.ACTION_DOWN)
-        {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             //填色
             fillColorToSameArea(x, y);
         }
         return super.onTouchEvent(event);
     }
+
     /**
      * 根据x,y获得该点颜色，进行填充     *
+     *
      * @param x
      * @param y
      */
-    private void fillColorToSameArea(int x, int y)
-    {
+    private void fillColorToSameArea(int x, int y) {
         Bitmap bm = mBitmap;
 
         int pixel = bm.getPixel(x, y);
-        if (pixel == Color.TRANSPARENT || (hasBorderColor && mBorderColor == pixel))
-        {
+        if (pixel == Color.TRANSPARENT || (hasBorderColor && mBorderColor == pixel)) {
             return;
         }
         int newColor;
-        if(myColorType)
-            newColor=myColor;
+        if (myColorType)
+            newColor = myColor;
         else
             newColor = randomColor();
 
@@ -104,6 +106,7 @@ public class ColourImageView extends AppCompatImageView {
         bm.setPixels(pixels, 0, w, 0, 0, w, h);
         setImageDrawable(new BitmapDrawable(bm));
     }
+
     /**
      * @param pixels   像素数组
      * @param w        宽度
@@ -113,16 +116,14 @@ public class ColourImageView extends AppCompatImageView {
      * @param i        横坐标
      * @param j        纵坐标
      */
-    private void fillColor(int[] pixels, int w, int h, int pixel, int newColor, int i, int j)
-    {
+    private void fillColor(int[] pixels, int w, int h, int pixel, int newColor, int i, int j) {
         //步骤1：将种子点(x, y)入栈；
         mStacks.push(new Point(i, j));
 
         //步骤2：判断栈是否为空，
         // 如果栈为空则结束算法，否则取出栈顶元素作为当前扫描线的种子点(x, y)，
         // y是当前的扫描线；
-        while (!mStacks.isEmpty())
-        {
+        while (!mStacks.isEmpty()) {
             /**
              * 步骤3：从种子点(x, y)出发，沿当前扫描线向左、右两个方向填充，
              * 直到边界。分别标记区段的左、右端点坐标为xLeft和xRight；
@@ -149,6 +150,7 @@ public class ColourImageView extends AppCompatImageView {
                 findSeedInNewLine(pixels, pixel, w, h, seed.y + 1, left, right);
         }
     }
+
     /**
      * 在新行找种子节点
      *
@@ -160,8 +162,7 @@ public class ColourImageView extends AppCompatImageView {
      * @param left
      * @param right
      */
-    private void findSeedInNewLine(int[] pixels, int pixel, int w, int h, int i, int left, int right)
-    {
+    private void findSeedInNewLine(int[] pixels, int pixel, int w, int h, int i, int left, int right) {
         /**
          * 获得该行的开始索引
          */
@@ -176,88 +177,77 @@ public class ColourImageView extends AppCompatImageView {
         /**
          * 从end到begin，找到种子节点入栈（AAABAAAB，则B前的A为种子节点）
          */
-        while (end >= begin)
-        {
-            if (pixels[end] == pixel)
-            {
-                if (!hasSeed)
-                {
+        while (end >= begin) {
+            if (pixels[end] == pixel) {
+                if (!hasSeed) {
                     rx = end % w;
                     mStacks.push(new Point(rx, ry));
                     hasSeed = true;
                 }
-            } else
-            {
+            } else {
                 hasSeed = false;
             }
             end--;
         }
     }
+
     /**
      * 往右填色，返回填充的个数
      *
      * @return
      */
-    private int fillLineRight(int[] pixels, int pixel, int w, int h, int newColor, int x, int y)
-    {
+    private int fillLineRight(int[] pixels, int pixel, int w, int h, int newColor, int x, int y) {
         int count = 0;
 
-        while (x < w)
-        {
+        while (x < w) {
             //拿到索引
             int index = y * w + x;
-            if (needFillPixel(pixels, pixel, index))
-            {
+            if (needFillPixel(pixels, pixel, index)) {
                 pixels[index] = newColor;
                 count++;
                 x++;
-            } else
-            {
+            } else {
                 break;
             }
         }
         return count;
     }
+
     /**
      * 往左填色，返回填色的数量值
      *
      * @return
      */
-    private int fillLineLeft(int[] pixels, int pixel, int w, int h, int newColor, int x, int y)
-    {
+    private int fillLineLeft(int[] pixels, int pixel, int w, int h, int newColor, int x, int y) {
         int count = 0;
-        while (x >= 0)
-        {
+        while (x >= 0) {
             //计算出索引
             int index = y * w + x;
-            if (needFillPixel(pixels, pixel, index))
-            {
+            if (needFillPixel(pixels, pixel, index)) {
                 pixels[index] = newColor;
                 count++;
                 x--;
-            } else
-            {
+            } else {
                 break;
             }
         }
         return count;
     }
-    private boolean needFillPixel(int[] pixels, int pixel, int index)
-    {
-        if (hasBorderColor)
-        {
-            return pixels[index] != mBorderColor;
-        } else
-        {
-            return pixels[index] == pixel;
+
+    private boolean needFillPixel(int[] pixels, int pixel, int index) {
+        if (hasBorderColor) {
+            return Math.abs(pixels[index] - mBorderColor) > 2000000;
+        } else {
+            return Math.abs(pixels[index] - pixel) < 2000000;
         }
     }
 
     /**
      * 产生随机颜色
+     *
      * @return
      */
-    public int randomColor(){
+    public int randomColor() {
         Random random = new Random();
         int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
         return color;

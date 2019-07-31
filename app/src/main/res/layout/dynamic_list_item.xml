@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:background="#ffffff"
+                android:scaleType="centerCrop"
                 android:maxHeight="250dp"/>
         </RelativeLayout>
 

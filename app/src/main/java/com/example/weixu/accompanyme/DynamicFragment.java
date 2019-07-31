@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -39,6 +40,8 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class DynamicFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -49,6 +52,7 @@ public class DynamicFragment extends Fragment {
 
     // private FloatingActionButton fabInsertPicture, fabOpenCamera, fabOpenAlbum;  //添加图片
     private ImageView ivOpenInsertDynamic;
+    private Button btOnlyMe,btIntoCamera;
     private Intent intent;
     private SharedPreferences pref;
     private ListView lvDynamic;
@@ -57,6 +61,7 @@ public class DynamicFragment extends Fragment {
     private static int REQUEST_ALBUM = 2;
     private String mFilePath;
     private Bitmap bitmapCamera, bitmapAlbum;
+    private int ifOnlyMe=0;
 
     private boolean isOpenInsert = false;
 
@@ -100,15 +105,48 @@ public class DynamicFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        btOnlyMe=getView().findViewById(R.id.btOnlyMe);
+        btOnlyMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pref = getContext().getSharedPreferences("userBabyInfo", MODE_PRIVATE);
+                String dynamicUserEmail=pref.getString("userParentEmail","");// 登录的邮箱名
+                if(ifOnlyMe==0) {
+                    ifOnlyMe = 1;
+                    btOnlyMe.setText("查看全部");
+                }
+                else {
+                    ifOnlyMe = 0;
+                    dynamicUserEmail="";
+                    btOnlyMe.setText("只看自己");
+                }
+                getDate(dynamicUserEmail);
+            }
+        });
+        btIntoCamera=getView().findViewById(R.id.btIntoCamera);
+        btIntoCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CameraActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void getDate() {
+    private void getDate(String userEmail) {
         BmobQuery<Dynamic> query = new BmobQuery<Dynamic>();   //查询Bmob数据库中信息
         query.order("-updatedAt");
+        if(ifOnlyMe==1)
+            query.addWhereEqualTo("userEmail",userEmail);
         query.findObjects(new FindListener<Dynamic>() {
             @Override
             public void done(List<Dynamic> list, BmobException e) {
                 try {
+                    for(Dynamic d :list){
+                        String newStr=d.getDynamicPicture().getUrl().replaceFirst("bmob-cdn-10503.b0.upaiyun.com","bmob.dustray.cn");
+
+                        d.getDynamicPicture().setUrl(newStr);
+                    }
                     DynamicAdapter adapter = new DynamicAdapter(getActivity(), R.layout.dynamic_list_item, list);
                     lvDynamic.setAdapter(adapter);
                 }catch(Exception ex){
@@ -121,7 +159,7 @@ public class DynamicFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getDate();
+        getDate("");
     }
 
 

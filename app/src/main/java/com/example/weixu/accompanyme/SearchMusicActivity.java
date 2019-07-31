@@ -22,6 +22,9 @@ import com.example.weixu.util.SearchUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Request;
+
 public class SearchMusicActivity extends AppCompatActivity {
     private ListView lvSearchReasult;
 
@@ -47,7 +50,6 @@ public class SearchMusicActivity extends AppCompatActivity {
         Button btSearch = (Button) findViewById(R.id.bt_online_search);
         final EditText edtKey = (EditText) findViewById(R.id.edt_search);
         btSearch.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 dialog.show();// 进入加载状态，显示进度条
@@ -100,7 +102,9 @@ public class SearchMusicActivity extends AppCompatActivity {
                     lvSearchReasult.setAdapter(adapter);
                     break;
             }
-        };
+        }
+
+        ;
     };
 
     public void goBack(View view) {
@@ -111,6 +115,7 @@ public class SearchMusicActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

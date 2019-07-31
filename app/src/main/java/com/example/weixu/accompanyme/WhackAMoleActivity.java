@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class WhackAMoleActivity extends AppCompatActivity {
 
     private ImageView[][] view=new ImageView[4][4];
-    private Button btStartWhackAMole,btStopWhackAMole;
+    private Button btStartOrSuspendWhackAMole,btEmptyWhackAMole;
     private TextView tvWhackAMoleScore;
 
     private int time_s=1000;   //难度的时间
@@ -21,7 +21,7 @@ public class WhackAMoleActivity extends AppCompatActivity {
     private int score=0;  //成绩，打地鼠个数
     private int num=0;   //地鼠出来个数
     private  int temp_i=0,temp_j=0;   //记录上一次出现的地鼠在数组view中的下标
-    private int flag=1;   //默认为停止状态，0开始，1结束，2运行
+    private int flagStartSus=1;   //默认为停止状态，0开始，1结束，2运行
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,16 +47,18 @@ public class WhackAMoleActivity extends AppCompatActivity {
         view[3][1]= (ImageView) findViewById(R.id.ivThreeOne);
         view[3][2]= (ImageView) findViewById(R.id.ivThreeTwo);
         view[3][3]= (ImageView) findViewById(R.id.ivThreeThree);
-        btStartWhackAMole= (Button) findViewById(R.id.btStartWhackAMole);
-        btStopWhackAMole= (Button) findViewById(R.id.btStopWhackAMole);
+        btStartOrSuspendWhackAMole= (Button) findViewById(R.id.btStartOrSuspendWhackAMole);
+        btEmptyWhackAMole= (Button) findViewById(R.id.btEmptyWhackAMole);
         tvWhackAMoleScore= (TextView) findViewById(R.id.tvWhackAMoleScore);
-        btStartWhackAMole.setClickable(true);
-        btStopWhackAMole.setClickable(false);
-//        for(int i=0;i<4;i++){
-//            for(int j=0;j<4;j++){
-//                view[i][j].setClickable(false);
-//            }
-//        }
+        btStartOrSuspendWhackAMole.setClickable(true);
+        btEmptyWhackAMole.setClickable(false);
+        if(flagStartSus==1){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<4;j++){
+                    view[i][j].setClickable(false);
+                }
+            }
+        }
     }
 
     public void whackAMole(View view){
@@ -66,23 +68,39 @@ public class WhackAMoleActivity extends AppCompatActivity {
         time=time_s-score*10;
         tvWhackAMoleScore.setText("分数："+score);
     }
-    public void btnClick(View view){
-        switch (view.getId()){
-            case R.id.btStartWhackAMole:
-                btStartWhackAMole.setClickable(false);
-                btStopWhackAMole.setClickable(true);
+    public void btnClick(View v){
+        switch (v.getId()){
+            case R.id.btStartOrSuspendWhackAMole:     //点击左下角的开始，暂停按钮
+                if(flagStartSus==1){       //原来是暂停，点击变为开始
+                    for(int i=0;i<4;i++){
+                        for(int j=0;j<4;j++){
+                            view[i][j].setClickable(true);
+                        }
+                    }
+                    btStartOrSuspendWhackAMole.setText("暂停");
+                    flagStartSus=0;      //变为开始
+                    btEmptyWhackAMole.setClickable(false);
+                    flagStartSus=0;  //开始
+                    new MyAsyncTask().execute();
+                }else{      //原来是开始，点击变为暂停
+                    btEmptyWhackAMole.setClickable(true);
+                    for(int i=0;i<4;i++){
+                        for(int j=0;j<4;j++){
+                            view[i][j].setClickable(false);
+                        }
+                    }
+                    btStartOrSuspendWhackAMole.setText("开始");
+                    btEmptyWhackAMole.setText("清空");
+                    flagStartSus=1;      //变为暂停
+                    flagStartSus=1;  //停止
+                }
+
+                break;
+            case R.id.btEmptyWhackAMole:      //清空按钮
                 num=0;
                 score=0;
-                flag=0;  //开始
-                tvWhackAMoleScore.setText("分数：0");
-                new MyAsyncTask().execute();
-                break;
-            case R.id.btStopWhackAMole:
-                btStartWhackAMole.setClickable(true);
-                btStopWhackAMole.setClickable(false);
-                score=0;
-                flag=1;  //停止
-                new MyAsyncTask().execute();
+                tvWhackAMoleScore.setText("分数：0");  //清空数据
+                view[temp_i][temp_j].setBackgroundResource(R.drawable.emptyhole);
                 break;
         }
     }
@@ -91,8 +109,8 @@ public class WhackAMoleActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             //进入运行状态
-            while(flag!=1){
-                flag=2;
+            while(flagStartSus!=1){
+                flagStartSus=2;
                 double r=Math.random();
                 int i=((int)(r*10))%4;
                 r=Math.random();
@@ -100,7 +118,7 @@ public class WhackAMoleActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(time);
                 }catch (InterruptedException e){
-                    e.printStackTrace();;
+                    e.printStackTrace();
                 }
                 publishProgress(i,j);
             }
@@ -109,22 +127,22 @@ public class WhackAMoleActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {   //主线程
-            if(flag==0){   //开始
+            if(flagStartSus==0){   //开始
                 view[values[0]][values[1]].setBackgroundResource(R.drawable.emptyhole);
-            }else if(flag==2){   //运行
+            }else if(flagStartSus==2){   //运行
                 view[temp_i][temp_j].setBackgroundResource(R.drawable.emptyhole);
                 view[temp_i][temp_j].setClickable(false);  //上一次出现的设置为不能点击
                 view[values[0]][values[1]].setBackgroundResource(R.drawable.show);
                 view[values[0]][values[1]].setClickable(true);
                 num++;
                 if((num-score)==5){
-                    flag=1;
-                    btStartWhackAMole.setClickable(true);
+                    flagStartSus=1;
+                    btStartOrSuspendWhackAMole.setClickable(true);
                     Toast.makeText(WhackAMoleActivity.this,"游戏结束",Toast.LENGTH_SHORT).show();
                 }
                 temp_i=values[0];
                 temp_j=values[1];
-            }else if(flag==1){
+            }else if(flagStartSus==1){
                 view[values[0]][values[1]].setBackgroundResource(R.drawable.emptyhole);
                 view[values[0]][values[1]].setClickable(false);
             }

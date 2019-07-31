@@ -8,14 +8,28 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.example.weixu.table.GrownLine;
+
+import java.util.List;
+
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 public class InsertChartInfoActivity extends AppCompatActivity {
     private EditText etBabyTall,etBabyWeight;
+    private GrownLine babyLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert_chart_info);
+        Bmob.initialize(InsertChartInfoActivity.this, "96556b6d6dbe89f2ff4a7c1553d882ec");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
     }
@@ -26,45 +40,45 @@ public class InsertChartInfoActivity extends AppCompatActivity {
     }
 
     public void btSubmit(View view) {
+        babyLine=new GrownLine();
         switch (view.getId()) {
             case R.id.btInsertSubmit:
                 SharedPreferences prefBaby = getSharedPreferences("userBabyInfo", Context.MODE_PRIVATE); //打开保存宝宝信息的文件
 //                SharedPreferences.Editor editorBaby = prefBaby.edit();
                 int babyAge=prefBaby.getInt("userBabyAge",0);
-                SharedPreferences prefGrow = getSharedPreferences("babyGrowInfo", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editorGrow = prefGrow.edit();          //打开保存成长的文件
-                switch (babyAge){
-                    case 0:
-                        editorGrow.putInt("tallZero", Integer.parseInt(etBabyTall.getText().toString()));//保存输入的身高
-                        editorGrow.putInt("WeightZero", Integer.parseInt(etBabyWeight.getText().toString()));//保存输入的体重
-                        break;
-                    case 1:
-                        editorGrow.putInt("tallOne", Integer.parseInt(etBabyTall.getText().toString()));//保存输入的身高
-                        editorGrow.putInt("WeightOne", Integer.parseInt(etBabyWeight.getText().toString()));//保存输入的体重
-                        break;
-                    case 2:
-                        editorGrow.putInt("tallTwo", Integer.parseInt(etBabyTall.getText().toString()));//保存输入的身高
-                        editorGrow.putInt("WeightTwo", Integer.parseInt(etBabyWeight.getText().toString()));//保存输入的体重
-                        break;
-                    case 3:
-                        editorGrow.putInt("tallThree", Integer.parseInt(etBabyTall.getText().toString()));//保存输入的身高
-                        editorGrow.putInt("WeightThree", Integer.parseInt(etBabyWeight.getText().toString()));//保存输入的体重
-                        break;
-                    case 4:
-                        editorGrow.putInt("tallFour", Integer.parseInt(etBabyTall.getText().toString()));//保存输入的身高
-                        editorGrow.putInt("WeightFour", Integer.parseInt(etBabyWeight.getText().toString()));//保存输入的体重
-                        break;
-                    case 5:
-                        editorGrow.putInt("tallFive", Integer.parseInt(etBabyTall.getText().toString()));//保存输入的身高
-                        editorGrow.putInt("WeightFive", Integer.parseInt(etBabyWeight.getText().toString()));//保存输入的体重
-                        break;
-                    case 6:
-                        editorGrow.putInt("tallSix", Integer.parseInt(etBabyTall.getText().toString()));//保存输入的身高
-                        editorGrow.putInt("WeightSix", Integer.parseInt(etBabyWeight.getText().toString()));//保存输入的体重
-                        break;
-                }
-                editorGrow.commit();
-                finish();
+                String userEmail=prefBaby.getString("userParentEmail",null);
+                babyLine.setBabyAge(babyAge);
+                babyLine.setBabyWeight(etBabyWeight.getText().toString());
+                babyLine.setBabyTall(etBabyTall.getText().toString());
+                babyLine.setUserEmail(userEmail);
+                BmobQuery<GrownLine> query=new BmobQuery<GrownLine>();
+                query.addWhereEqualTo("babyAge",babyAge);
+                query.addWhereEqualTo("userEmail",userEmail);
+                query.findObjects(new FindListener<GrownLine>() {
+                    @Override
+                    public void done(List<GrownLine> list, BmobException e) {
+                        if(list.size()>0){     //有数据，修改
+                            babyLine.update(list.get(0).getObjectId(), new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+                                    Toast.makeText(InsertChartInfoActivity.this,"修改成功",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else{     //无数据，存储
+                            babyLine.save(new SaveListener<String>() {
+                                @Override
+                                public void done(String s, BmobException e) {
+                                    Toast.makeText(InsertChartInfoActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        Intent intent=new Intent(InsertChartInfoActivity.this,GrowLineActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
                 break;
         }
     }

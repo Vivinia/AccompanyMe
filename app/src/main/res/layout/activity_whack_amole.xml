@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/mouse_back"
     tools:context="com.example.weixu.accompanyme.WhackAMoleActivity">
 
     <LinearLayout
@@ -192,7 +193,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btStartWhackAMole"
+            android:id="@+id/btStartOrSuspendWhackAMole"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
@@ -209,18 +210,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="分数"
+            android:text="分数：0"
             android:textSize="18dp" />
 
         <Button
-            android:id="@+id/btStopWhackAMole"
+            android:id="@+id/btEmptyWhackAMole"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
             android:layout_weight="1"
             android:background="@drawable/xml_btn_color_primary"
             android:onClick="btnClick"
-            android:text="结束"
+            android:text="清空"
             android:textColor="@color/white"
             android:textSize="18dp" />
     </LinearLayout>

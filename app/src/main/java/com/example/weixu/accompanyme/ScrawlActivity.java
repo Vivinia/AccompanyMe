@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -42,7 +44,6 @@ public class ScrawlActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrawl);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
 
         //触摸方法
@@ -199,14 +200,16 @@ public class ScrawlActivity extends AppCompatActivity {
 
     private void save() {
         try {
-            File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
+            File file = new File(Environment.getExternalStorageDirectory(), "Pictures/"+System.currentTimeMillis() + ".jpg");
             OutputStream stream = new FileOutputStream(file);
             baseBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             stream.close();
             // 模拟一个广播，通知系统sdcard被挂载
+           // MediaStore.Images.Media.insertImage(getContentResolver(), BitmapFactory.decodeFile(file.getAbsolutePath()), file.getName(), null);
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            intent.setData(Uri.fromFile(Environment.getExternalStorageDirectory()));
+            Uri uri = Uri.fromFile(file);
+            intent.setData(uri);
             sendBroadcast(intent);
             Toast.makeText(this, "保存图片成功", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
@@ -217,13 +220,7 @@ public class ScrawlActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            default:
-                break;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 }
